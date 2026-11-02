@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#11110f">
   <meta name="description" content="A private-to-admin screenplay archive. Browse, read and discover screenplays in one clean library.">
-  <title>ScriptPlay</title>
+  <title>Scriptroom | The screenplay library</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
@@ -192,15 +192,68 @@
 
   <dialog class="modal reader-modal" id="reader-dialog" aria-labelledby="reader-title">
     <div class="reader-shell">
-      <div class="reader-topbar">
-        <div class="reader-heading"><span class="reader-kicker">NOW READING</span><h2 id="reader-title">Screenplay title</h2><span class="reader-meta" id="reader-meta"></span></div>
+      <header class="reader-topbar">
+        <div class="reader-heading">
+          <span class="reader-kicker">SCRIPTROOM / READER</span>
+          <h2 id="reader-title">Screenplay title</h2>
+          <span class="reader-meta" id="reader-meta"></span>
+        </div>
         <div class="reader-actions">
-          <a class="button button-quiet reader-open-link" id="reader-open-link" href="#" target="_blank" rel="noopener">Open PDF <span>↗</span></a>
-          <button class="icon-button reader-close" type="button" data-close="reader-dialog" aria-label="Close reader">×</button>
+          <a class="reader-icon-link" id="reader-open-link" href="#" target="_blank" rel="noopener" aria-label="Open original PDF in a new tab" title="Open original PDF">↗</a>
+          <button class="reader-icon-button reader-close" type="button" data-close="reader-dialog" aria-label="Close reader" title="Close reader">×</button>
+        </div>
+      </header>
+
+      <div class="reader-toolbar" role="toolbar" aria-label="PDF reader controls">
+        <div class="reader-tool-group page-tools">
+          <button class="reader-tool-button" id="reader-prev" type="button" aria-label="Previous page" title="Previous page">‹</button>
+          <label class="reader-page-count" for="reader-page-input">
+            <input id="reader-page-input" type="number" min="1" value="1" inputmode="numeric" aria-label="Current page">
+            <span>/ <b id="reader-page-count">—</b></span>
+          </label>
+          <button class="reader-tool-button" id="reader-next" type="button" aria-label="Next page" title="Next page">›</button>
+        </div>
+
+        <div class="reader-tool-group zoom-tools">
+          <button class="reader-tool-button" id="reader-zoom-out" type="button" aria-label="Zoom out" title="Zoom out">−</button>
+          <span class="reader-zoom-value" id="reader-zoom-value">Fit</span>
+          <button class="reader-tool-button" id="reader-zoom-in" type="button" aria-label="Zoom in" title="Zoom in">+</button>
+          <button class="reader-tool-button reader-fit-button" id="reader-fit" type="button" aria-pressed="true" title="Fit page to width">Fit width</button>
+        </div>
+
+        <div class="reader-tool-group reader-view-tools">
+          <button class="reader-tool-button reader-night-button" id="reader-night-toggle" type="button" aria-pressed="false" title="Toggle night page">☾ <span>Night page</span></button>
+          <button class="reader-tool-button" id="reader-fullscreen" type="button" aria-label="Toggle fullscreen" title="Toggle fullscreen">⛶</button>
         </div>
       </div>
-      <div class="reader-body"><iframe id="reader-frame" title="Screenplay PDF reader" src="about:blank"></iframe></div>
-      <div class="reader-footer"><span>SCRIPTROOM READER</span><span>THE STORY IS YOURS TO DISCOVER.</span></div>
+
+      <div class="reader-searchbar">
+        <label class="reader-search-field" for="reader-search-input">
+          <span aria-hidden="true">⌕</span>
+          <input id="reader-search-input" type="search" placeholder="Find in this screenplay…" autocomplete="off">
+        </label>
+        <button class="reader-search-button" id="reader-search-prev" type="button" title="Previous match" aria-label="Previous match">↑</button>
+        <button class="reader-search-button" id="reader-search-next" type="button" title="Next match" aria-label="Next match">↓</button>
+        <span class="reader-search-status" id="reader-search-status" aria-live="polite">Search the script</span>
+      </div>
+
+      <main class="reader-body" id="reader-body">
+        <div class="reader-loading" id="reader-loading">
+          <span class="loading-spinner"></span>
+          <strong>Preparing your screenplay</strong>
+          <span>Setting the pages under the reading light…</span>
+        </div>
+        <div class="reader-stage" id="reader-stage" hidden>
+          <div class="reader-page-wrap" id="reader-page-wrap">
+            <canvas id="reader-canvas" aria-label="Rendered screenplay page"></canvas>
+          </div>
+        </div>
+      </main>
+
+      <footer class="reader-footer">
+        <span>BUILT FOR THE QUIET PART OF THE MOVIE.</span>
+        <span id="reader-footer-page">PAGE 1</span>
+      </footer>
     </div>
   </dialog>
 
