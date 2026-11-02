@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Screenplays</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF0F4; --surface:#FFFFFF; --ink:#161A23; --muted:#5F6676; --line:#D9DDE6;
+  --accent:#3550D6; --accent-ink:#FFFFFF; --danger:#C0352B; --ok:#1E7F4F; --shadow:0 1px 2px rgba(20,24,40,.08),0 8px 24px rgba(20,24,40,.06);
+  --script:"Courier Prime","Courier New",Courier,monospace;
+  --ui:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+:root[data-theme="dark"]{
+  --bg:#0E1117; --surface:#171B24; --ink:#E7EAF2; --muted:#98A0B3; --line:#2A3040;
+  --accent:#8CA4FF; --accent-ink:#0E1117; --danger:#FF7B6E; --ok:#5BD08F; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--ui);transition:background .2s,color .2s}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+header.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:12px;height:64px}
+.brand{font:700 20px var(--script);letter-spacing:.02em;margin-right:auto}
+.btn{border:1px solid var(--line);background:var(--surface);padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:600;font-size:14px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.danger{color:var(--danger)}
+.btn:disabled{opacity:.55;cursor:wait}
+.hero{padding:44px 0 20px}
+.hero h1{font:700 clamp(30px,5vw,46px)/1.1 var(--script);margin:0 0 10px}
+.hero p{margin:0;color:var(--muted);max-width:60ch}
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0}
+.tools input,.tools select{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 12px}
+.tools input{flex:1 1 240px}
+.count{color:var(--muted);font-size:14px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;padding-bottom:70px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden}
+.page{aspect-ratio:8.5/6;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;border-bottom:1px solid var(--line);font-family:var(--script);background:var(--bg)}
+.page h3{margin:0 0 6px;font-size:21px;line-height:1.2;text-transform:uppercase;letter-spacing:.03em}
+.page small{color:var(--muted);font-size:13px}
+.body{padding:14px 16px;display:flex;flex-direction:column;gap:10px;flex:1}
+.logline{margin:0;font-size:14px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;border:1px solid var(--line);border-radius:99px;padding:2px 10px;color:var(--muted)}
+.tag.draft{border-color:var(--accent);color:var(--accent)}
+.actions{display:flex;gap:8px;margin-top:auto}
+.actions .btn{flex:1}
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;border:2px dashed var(--line);border-radius:12px;color:var(--muted)}
+.empty b{display:block;color:var(--ink);font-size:18px;margin-bottom:6px}
+dialog{border:0;border-radius:14px;padding:0;background:var(--surface);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.45);max-width:94vw}
+dialog::backdrop{background:rgba(5,8,14,.65)}
+.dlg{padding:22px;width:min(520px,92vw)}
+.dlg h2{margin:0 0 14px;font:700 22px var(--script)}
+label{display:block;font-size:14px;font-weight:600;margin:12px 0 4px}
+label span{font-weight:400;color:var(--muted)}
+.dlg input[type=text],.dlg input[type=password],.dlg select,.dlg textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 12px}
+.drop{border:2px dashed var(--line);border-radius:10px;padding:22px;text-align:center;color:var(--muted);cursor:pointer}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.row{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+.hint{font-size:13px;color:var(--muted);margin:8px 0 0}
+.reader{width:min(1000px,96vw);height:92vh;display:flex;flex-direction:column}
+.reader header{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.reader header strong{margin-right:auto;font-family:var(--script);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.reader iframe{flex:1;border:0;width:100%;background:#fff}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;font-size:14px;box-shadow:var(--shadow);z-index:99;max-width:90vw}
+.toast[hidden]{display:none}
+footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:14px}
+.owner-only{display:none}
+body.owner .owner-only{display:inline-block}
+body.owner .guest-only{display:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap bar">
+  <div class="brand">&#9998; My Screenplays</div>
+  <button class="btn primary owner-only" id="uploadBtn">Upload screenplay</button>
+  <button class="btn guest-only" id="loginBtn">Owner sign in</button>
+  <button class="btn owner-only" id="logoutBtn">Sign out</button>
+  <button class="btn" id="themeBtn" aria-label="Switch between light and dark mode">Dark mode</button>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>Read my scripts.</h1>
+    <p>A growing library of my screenplays. Open any script to read it here, or download the PDF.</p>
+  </section>
+  <div class="tools">
+    <input type="search" id="q" placeholder="Search by title, genre or logline" aria-label="Search screenplays">
+    <select id="genreF" aria-label="Filter by genre"><option value="">All genres</option></select>
+    <select id="sortF" aria-label="Sort screenplays">
+      <option value="new">Newest first</option><option value="old">Oldest first</option><option value="az">Title A to Z</option>
+    </select>
+  </div>
+  <div class="count" id="count" aria-live="polite"></div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer><div class="wrap">Everything here is read-only for visitors. Only the owner can add or remove scripts.</div></footer>
+
+<dialog id="loginDlg"><div class="dlg">
+  <h2>Owner sign in</h2>
+  <p class="hint" style="margin-top:0">Paste a GitHub fine-grained token with <b>Contents: Read and write</b> access to this repository only. It stays in this browser and is never sent anywhere except GitHub.</p>
+  <div id="repoRow" hidden><label for="repoIn">Repository <span>(owner/name)</span></label><input type="text" id="repoIn" placeholder="yourname/screenplays"></div>
+  <label for="tokenIn">GitHub token</label><input type="password" id="tokenIn" autocomplete="off" placeholder="github_pat_...">
+  <div class="row"><button class="btn" data-close>Cancel</button><button class="btn primary" id="loginGo">Sign in</button></div>
+</div></dialog>
+
+<dialog id="upDlg"><div class="dlg">
+  <h2>Upload a screenplay</h2>
+  <div class="drop" id="drop" tabindex="0" role="button">Drop a PDF here or click to choose (max 25 MB)</div>
+  <input type="file" id="file" accept="application/pdf,.pdf" hidden>
+  <label for="tIn">Title</label><input type="text" id="tIn" maxlength="90">
+  <label for="gIn">Genre <span>(optional)</span></label><input type="text" id="gIn" maxlength="40" placeholder="Thriller, Comedy, Drama...">
+  <label for="sIn">Status</label>
+  <select id="sIn"><option>Final draft</option><option>Work in progress</option><option>Outline</option></select>
+  <label for="lIn">Logline <span>(optional)</span></label><textarea id="lIn" rows="3" maxlength="400"></textarea>
+  <div class="row"><button class="btn" data-close>Cancel</button><button class="btn primary" id="upGo">Upload</button></div>
+</div></dialog>
+
+<dialog id="readDlg"><div class="reader">
+  <header><strong id="rTitle"></strong>
+    <a class="btn" id="rOpen" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">Open in new tab</a>
+    <button class="btn" data-close>Close</button></header>
+  <iframe id="rFrame" title="Screenplay PDF"></iframe>
+</div></dialog>
+
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script>
+const cfg={owner:"",repo:"",branch:"main",folder:"library",file:"library.json"};
+// Auto-detects owner/repo from a github.io address. Set them by hand here if you use a custom domain.
+if(location.hostname.endsWith(".github.io")){cfg.owner=location.hostname.split(".")[0];cfg.repo=location.pathname.split("/")[1]||location.hostname}
+const $=s=>document.querySelector(s);
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let lib=[],token=store.get("sv_token"),chosen=null;
+if(store.get("sv_repo")&&!cfg.owner){[cfg.owner,cfg.repo]=store.get("sv_repo").split("/")}
+
+function toast(m,ms=3500){const t=$("#toast");t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,ms)}
+
+/* ---------- theme ---------- */
+function setTheme(t){document.documentElement.dataset.theme=t;$("#themeBtn").textContent=t==="dark"?"Light mode":"Dark mode";store.set("sv_theme",t)}
+setTheme(store.get("sv_theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
+$("#themeBtn").onclick=()=>setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark");
+
+/* ---------- library ---------- */
+async function load(){
+  try{const r=await fetch(cfg.file+"?t="+Date.now());lib=r.ok?await r.json():[]}catch(e){lib=[]}
+  if(!Array.isArray(lib))lib=[];
+  const genres=[...new Set(lib.map(s=>s.genre).filter(Boolean))].sort();
+  $("#genreF").innerHTML='<option value="">All genres</option>'+genres.map(g=>`<option>${esc(g)}</option>`).join("");
+  render();
+  if(location.hash.length>1){const s=lib.find(x=>x.id===location.hash.slice(1));if(s)openReader(s)}
+}
+function render(){
+  const q=$("#q").value.trim().toLowerCase(),g=$("#genreF").value,so=$("#sortF").value;
+  let list=lib.filter(s=>(!g||s.genre===g)&&(!q||[s.title,s.genre,s.logline].join(" ").toLowerCase().includes(q)));
+  list.sort((a,b)=>so==="az"?a.title.localeCompare(b.title):so==="old"?a.added.localeCompare(b.added):b.added.localeCompare(a.added));
+  $("#count").textContent=lib.length?`${list.length} of ${lib.length} screenplay${lib.length===1?"":"s"}`:"";
+  $("#grid").innerHTML=list.length?list.map(s=>`
+    <article class="card">
+      <div class="page"><h3>${esc(s.title)}</h3><small>${esc(s.genre||"Screenplay")}</small></div>
+      <div class="body">
+        <div class="tags"><span class="tag ${s.status==="Final draft"?"":"draft"}">${esc(s.status)}</span><span class="tag">${esc(s.size)}</span><span class="tag">${esc(s.added.slice(0,10))}</span></div>
+        ${s.logline?`<p class="logline">${esc(s.logline)}</p>`:""}
+        <div class="actions"><button class="btn primary" data-read="${esc(s.id)}">Read</button><a class="btn" href="${esc(cfg.folder+"/"+s.file)}" download style="text-align:center;text-decoration:none;color:inherit">Download</a>
+        <button class="btn danger owner-only" data-del="${esc(s.id)}" aria-label="Delete ${esc(s.title)}">Delete</button></div>
+      </div></article>`).join(""):
+    `<div class="empty"><b>${lib.length?"No matches":"No screenplays yet"}</b>${lib.length?"Try a different search or genre.":"The owner can sign in and upload the first one."}</div>`;
+}
+["#q","#genreF","#sortF"].forEach(s=>$(s).addEventListener("input",render));
+$("#grid").addEventListener("click",e=>{
+  const r=e.target.closest("[data-read]"),d=e.target.closest("[data-del]");
+  if(r)openReader(lib.find(s=>s.id===r.dataset.read));
+  if(d)delScript(lib.find(s=>s.id===d.dataset.del));
+});
+function openReader(s){
+  if(!s)return;const url=cfg.folder+"/"+s.file;
+  $("#rTitle").textContent=s.title;$("#rOpen").href=url;$("#rFrame").src=url;
+  $("#readDlg").showModal();history.replaceState(null,"","#"+s.id);
+}
+$("#readDlg").addEventListener("close",()=>{$("#rFrame").src="about:blank";history.replaceState(null,"",location.pathname)});
+document.addEventListener("click",e=>{if(e.target.matches("[data-close]"))e.target.closest("dialog").close()});
+
+/* ---------- GitHub API (owner only) ---------- */
+async function gh(path,opt={}){
+  const r=await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/${path}`,{...opt,headers:{Accept:"application/vnd.github+json",Authorization:"Bearer "+token,...(opt.headers||{})}});
+  if(!r.ok&&r.status!==404){const j=await r.json().catch(()=>({}));throw new Error(j.message||("GitHub error "+r.status))}
+  return r;
+}
+const b64text=s=>{const b=new TextEncoder().encode(s);let x="";b.forEach(c=>x+=String.fromCharCode(c));return btoa(x)};
+const fromB64=s=>new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\n/g,"")),c=>c.charCodeAt(0)));
+const readB64=f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(",")[1]);r.onerror=()=>rej(new Error("Could not read the file"));r.readAsDataURL(f)});
+async function saveManifest(mutate,msg){
+  const r=await gh(`contents/${cfg.file}?ref=${cfg.branch}`);
+  let sha,cur=[];
+  if(r.status!==404){const j=await r.json();sha=j.sha;cur=JSON.parse(fromB64(j.content))}
+  const next=mutate(cur);
+  await gh(`contents/${cfg.file}`,{method:"PUT",body:JSON.stringify({message:msg,branch:cfg.branch,sha,content:b64text(JSON.stringify(next,null,2))})});
+  return next;
+}
+function setOwner(on){document.body.classList.toggle("owner",on)}
+async function verify(){
+  const r=await gh("");if(r.status===404)throw new Error("Repository not found. Check the name and token access.");
+  const j=await r.json();if(!j.permissions||!j.permissions.push)throw new Error("This token cannot write to the repository.");
+  cfg.branch=j.default_branch;
+}
+if(token&&cfg.owner){verify().then(()=>setOwner(true)).catch(()=>{token=null;store.del("sv_token")})}
+
+$("#loginBtn").onclick=()=>{$("#repoRow").hidden=!!cfg.owner;$("#loginDlg").showModal()};
+$("#loginGo").onclick=async()=>{
+  const t=$("#tokenIn").value.trim();
+  if(!cfg.owner){const v=$("#repoIn").value.trim().split("/");if(v.length!==2)return toast("Enter the repository as owner/name");[cfg.owner,cfg.repo]=v}
+  if(!t)return toast("Paste your token first");
+  token=t;$("#loginGo").disabled=true;
+  try{await verify();store.set("sv_token",t);store.set("sv_repo",cfg.owner+"/"+cfg.repo);setOwner(true);$("#loginDlg").close();$("#tokenIn").value="";toast("Signed in. You can upload now.")}
+  catch(e){token=null;toast(e.message,6000)}
+  $("#loginGo").disabled=false;
+};
+$("#logoutBtn").onclick=()=>{token=null;store.del("sv_token");setOwner(false);toast("Signed out")};
+
+/* ---------- upload ---------- */
+const drop=$("#drop");
+$("#uploadBtn").onclick=()=>{chosen=null;["#tIn","#gIn","#lIn"].forEach(s=>$(s).value="");drop.textContent="Drop a PDF here or click to choose (max 25 MB)";$("#upDlg").showModal()};
+drop.onclick=()=>$("#file").click();
+drop.onkeydown=e=>{if(e.key==="Enter"||e.key===" ")$("#file").click()};
+["dragover","dragenter"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("over")}));
+["dragleave","drop"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("over")}));
+drop.addEventListener("drop",e=>pick(e.dataTransfer.files[0]));
+$("#file").onchange=e=>pick(e.target.files[0]);
+function pick(f){
+  if(!f)return;
+  if(f.type!=="application/pdf"&&!f.name.toLowerCase().endsWith(".pdf"))return toast("Only PDF files are supported");
+  if(f.size>25*1024*1024)return toast("That file is over 25 MB. Compress it and try again.",5000);
+  chosen=f;drop.textContent=f.name+" ("+(f.size/1048576).toFixed(1)+" MB)";
+  if(!$("#tIn").value)$("#tIn").value=f.name.replace(/\.pdf$/i,"").replace(/[_-]+/g," ").trim();
+}
+$("#upGo").onclick=async()=>{
+  const title=$("#tIn").value.trim();
+  if(!chosen)return toast("Choose a PDF first");
+  if(!title)return toast("Give the screenplay a title");
+  const id=(title.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"script")+"-"+Date.now().toString(36);
+  const file=id+".pdf",entry={id,title,genre:$("#gIn").value.trim(),status:$("#sIn").value,logline:$("#lIn").value.trim(),file,size:(chosen.size/1048576).toFixed(1)+" MB",added:new Date().toISOString()};
+  const btn=$("#upGo");btn.disabled=true;btn.textContent="Uploading...";
+  try{
+    const content=await readB64(chosen);
+    await gh(`contents/${cfg.folder}/${file}`,{method:"PUT",body:JSON.stringify({message:"Add screenplay: "+title,branch:cfg.branch,content})});
+    lib=await saveManifest(c=>[entry,...c],"Update library: "+title);
+    $("#upDlg").close();render();load();
+    toast("Uploaded. It can take about a minute to appear for visitors.",6000);
+  }catch(e){toast("Upload failed: "+e.message,7000)}
+  btn.disabled=false;btn.textContent="Upload";
+};
+
+/* ---------- delete ---------- */
+async function delScript(s){
+  if(!s||!confirm(`Delete "${s.title}"? This removes the PDF from the site.`))return;
+  try{
+    const r=await gh(`contents/${cfg.folder}/${s.file}?ref=${cfg.branch}`);
+    if(r.status!==404){const j=await r.json();await gh(`contents/${cfg.folder}/${s.file}`,{method:"DELETE",body:JSON.stringify({message:"Remove screenplay: "+s.title,branch:cfg.branch,sha:j.sha})})}
+    lib=await saveManifest(c=>c.filter(x=>x.id!==s.id),"Update library: remove "+s.title);
+    render();toast("Deleted");
+  }catch(e){toast("Delete failed: "+e.message,7000)}
+}
+load();
+</script>
+</body>
+</html>
